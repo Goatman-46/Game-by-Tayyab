@@ -29,7 +29,7 @@
     <h2 class="text-3xl font-bold text-center mb-10 text-green-700">About Pakistan</h2>
     <div class="grid md:grid-cols-2 gap-10">
       <div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Faisal_Mosque_Islamabad_Pakistan2.jpg/800px-Faisal_Mosque_Islamabad_Pakistan2.jpg" alt="Faisal Mosque" class="rounded-xl shadow-lg">
+        <img src=https://www.shutterstock.com/image-photo/outside-view-faisal-masjid-islamabad-pakistan-2488911703
       </div>
       <div class="flex flex-col justify-center">
         <p class="text-lg leading-relaxed">
