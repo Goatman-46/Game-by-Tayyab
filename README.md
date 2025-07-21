@@ -198,3 +198,53 @@ background: cyan;
         ctx.fillStyle = tileColors[tile];
         ctx.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
      }
+    }
+  }
+
+  function drawPlayer() {
+    ctx.fillStyle = player.color;
+    ctx.fillRect(player.x * tileSize, player.y * tileSize, tileSize, tileSize);
+  }
+
+  function drawGame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawMap();
+    drawPlayer();
+  }
+
+  function move(direction) {
+    if (direction === 'up' && player.y > 0) player.y--;
+    if (direction === 'down' && player.y < mapRows - 1) player.y++;
+    if (direction === 'left' && player.x > 0) player.x--;
+    if (direction === 'right' && player.x < mapCols - 1) player.x++;
+    drawGame();
+    checkTile();
+  }
+
+  function checkTile() {
+    const tile = map[player.y][player.x];
+    if (!gameState.starter) {
+      document.getElementById('starterSelection').style.display = 'block';
+    } else if (tile === 3 && Math.random() < 0.6) {
+      startBattle();
+    } else if (tile === 2) {
+      openCenter();
+    }
+  }
+
+  function chooseStarter(name) {
+    gameState.starter = name;
+    document.getElementById('starterSelection').style.display = 'none';
+    alert(`${name} has joined your team!`);
+    saveGame();
+  }
+
+  function openCenter() {
+    document.getElementById('pokemonCenter').style.display = 'block';
+  }
+
+  function closeCenter() {
+    document.getElementById('pokemonCenter').style.display = 'none';
+  }
+
+  function healTeam() {
