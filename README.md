@@ -399,3 +399,98 @@ if (gameState.coins >= 10) {
       div.innerHTML = `${poke.name} Lv.${poke.level} (HP: ${poke.hp}) `;
 
       const swap = document.createElement('button');
+swap.textContent = 'Switch';
+      swap.onclick = () => {
+        if (gameState.caught.length < 6) {
+          gameState.caught.push(poke);
+          gameState.storage.splice(i, 1);
+        } else {
+          const removed = gameState.caught.pop();
+          gameState.caught.push(poke);
+          gameState.storage.splice(i, 1, removed);
+        }
+        showStorage();
+      };
+      div.appendChild(swap);
+
+      const release = document.createElement('button');
+      release.textContent = 'Release';
+      release.onclick = () => {
+        gameState.storage.splice(i, 1);
+        showStorage();
+      };
+      div.appendChild(release);
+      list.appendChild(div);
+    });
+    document.getElementById("storageScreen").style.display = 'block';
+  }
+
+  function closeStorage() {
+    document.getElementById("storageScreen").style.display = 'none';
+  }
+
+  drawGame();
+  setInterval(saveGame, 50000);
+</script>
+  <script>
+    function saveToSlot(slot) {
+      localStorage.setItem(`pokemonSaveSlot${slot}`, JSON.stringify(gameState));
+      alert(`Game saved to Slot ${slot}`);
+    }
+
+    function loadFromSlot(slot) {
+      const saved = localStorage.getItem(`pokemonSaveSlot${slot}`);
+      if (saved) {
+        gameState = JSON.parse(saved);
+        localStorage.setItem("pokemonSave", saved);
+        alert(`Game loaded from Slot ${slot}`);
+        drawGame();
+      } else {
+        alert("No save data in this slot.");
+      }
+    }
+
+    function resetGame() {
+      if (confirm("Are you sure you want to reset your game? This cannot be undone.")) {
+        localStorage.removeItem("pokemonSave");
+        localStorage.removeItem("pokemonSaveSlot1");
+        localStorage.removeItem("pokemonSaveSlot2");
+        location.reload();
+      }
+    }
+    function showReleaseMenu() {
+  const list = document.getElementById('releaseList');
+  list.innerHTML = '';
+
+  if (gameState.caught.length === 0) {
+    list.innerHTML = '<p>You have no caught Pokémon to release.</p>';
+    return;
+  }
+
+  gameState.caught.forEach((poke, index) => {
+    const div = document.createElement('div');
+    div.innerHTML = `${poke.name} (HP: ${poke.hp}, Lv.${poke.level}) `;
+
+    const releaseBtn = document.createElement('button');
+    releaseBtn.textContent = 'Release';
+    releaseBtn.onclick = () => {
+      if (confirm(`Are you sure you want to release ${poke.name}?`)) {
+        gameState.caught.splice(index, 1);
+        alert(`${poke.name} was released.`);
+        showReleaseMenu(); // refresh list
+      }
+    };
+
+    div.appendChild(releaseBtn);
+    list.appendChild(div);
+  });
+
+  document.getElementById('releaseMenu').style.display = 'block';
+}
+
+function closeReleaseMenu() {
+  document.getElementById('releaseMenu').style.display = 'none';
+}
+  </script>
+</body>
+</html>
