@@ -98,4 +98,53 @@ background: cyan;
     <button onclick="showReleaseMenu()">Release Pokémon</button>
     <div id="releaseMenu" style="margin-top:10px; display:none;">
       <h3>Choose a Pokémon to release:</h3>
+    <div id="releaseList"></div>
+      <button onclick="closeReleaseMenu()">Cancel</button>
+    </div>
+    <button onclick="healTeam()">Heal</button>
+    <button onclick="closeCenter()">Close</button>
+  </div>
 
+  <div id="statusScreen">
+    <h2>Your Pokémon</h2>
+    <div id="statusList"></div>
+    <button onclick="closeStatus()">Close</button>
+    <button onclick="saveGame()">Save Game</button>
+  </div>
+
+  <div id="switchMenu">
+    <h3>Choose a Pokémon to switch:</h3>
+    <div id="switchList"></div>
+    <button onclick="closeSwitchMenu()">Cancel</button>
+  </div>
+
+  <div id="storageScreen">
+    <h2>Pokémon Storage</h2>
+    <div id="storageList"></div>
+    <button onclick="closeStorage()">Close Storage</button>
+  </div>
+
+  <div class="controls">
+    <div>
+      <button onclick="move('up')">↑</button>
+    </div>
+    <div>
+      <button onclick="move('left')">←</button>
+      <button onclick="move('down')">↓</button>
+      <button onclick="move('right')">→</button>
+    </div>
+    <button onclick="showStatus()">Pokémon Status</button>
+  </div>
+
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+
+  const tileSize = 32;
+  const mapRows = 8;
+  const mapCols = 8;
+
+  const map = [
+    [0,0,0,3,1,1,1,1,1,1,1],
+    [0,2,0,0,1,1,1,1,1,1,1],
+    [0,0,0,0,0,3,1,1,1,1,1],
