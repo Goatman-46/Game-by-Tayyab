@@ -298,3 +298,104 @@ if (gameState.coins >= 10) {
   function catchPokemon() {
     if (Math.random() < wildPokemon.hp / wildPokemon.maxHp) {
       alert(`Oh no! ${wildPokemon.name} broke free!`);
+    } else {
+      alert(`You caught ${wildPokemon.name}!`);
+      gameState.caught.push({
+        name: wildPokemon.name,
+        hp: wildPokemon.maxHp,
+        level: 1,
+        sprite: wildPokemon.sprite
+      });
+      document.getElementById('battleScreen').style.display = 'none';
+    }
+  }
+
+  function runFromBattle() {
+    alert('You ran away safely!');
+    document.getElementById('battleScreen').style.display = 'none';
+  }
+
+  function updateBars() {
+    document.getElementById('enemyHp').style.width = (wildPokemon.hp / wildPokemon.maxHp * 100) + '%';
+    document.getElementById('playerHp').style.width = (gameState.hp / gameState.maxHp * 100) + '%';
+    document.getElementById('playerExp').style.width = (gameState.exp / gameState.expToLevel * 100) + '%';
+  }
+
+  function checkLevelUp() {
+    if (gameState.exp >= gameState.expToLevel) {
+      gameState.level++;
+      gameState.exp = 0;
+      gameState.expToLevel += 5;
+      gameState.maxHp += 5;
+      gameState.hp = gameState.maxHp;
+      alert(`${gameState.starter} leveled up to level ${gameState.level}!`);
+    }
+  }
+
+  function showStatus() {
+    const list = document.getElementById('statusList');
+    list.innerHTML = '';
+    if (gameState.starter) {
+      list.innerHTML += `<p>${gameState.starter} - HP: ${gameState.hp}/${gameState.maxHp}, Level: ${gameState.level}</p>`;
+    }
+    gameState.caught.forEach(p => {
+      list.innerHTML += `<p>${p.name} - HP: ${p.hp}, Level: ${p.level}</p>`;
+    });
+    document.getElementById('statusScreen').style.display = 'block';
+  }
+
+  function closeStatus() {
+    document.getElementById('statusScreen').style.display = 'none';
+  }
+
+  function saveGame() {
+    localStorage.setItem("pokemonSave", JSON.stringify(gameState));
+    alert("Game Saved!");
+  }
+
+  function showSwitchMenu() {
+    const switchList = document.getElementById('switchList');
+    switchList.innerHTML = '';
+    if (gameState.caught.length === 0) {
+      alert('You have no other Pokémon!');
+      return;
+    }
+    gameState.caught.forEach((poke, index) => {
+      const btn = document.createElement('button');
+      btn.textContent = `${poke.name} (HP: ${poke.hp})`;
+      btn.onclick = () => switchPokemon(index);
+      switchList.appendChild(btn);
+    });
+    document.getElementById('switchMenu').style.display = 'block';
+  }
+
+  function closeSwitchMenu() {
+    document.getElementById('switchMenu').style.display = 'none';
+  }
+
+  function switchPokemon(index) {
+    gameState.caught.push({
+      name: gameState.starter,
+      hp: gameState.hp,
+      level: gameState.level,
+      sprite: null
+    });
+
+    const selected = gameState.caught.splice(index, 1)[0];
+    gameState.starter = selected.name;
+    gameState.hp = selected.hp;
+    gameState.level = selected.level;
+
+    alert(`You switched to ${selected.name}!`);
+    updateBars();
+    closeSwitchMenu();
+  }
+
+  function showStorage() {
+    const list = document.getElementById("storageList");
+    list.innerHTML = '';
+    gameState.storage.forEach((poke, i) => {
+      const div = document.createElement('div');
+      div.innerHTML = `${poke.name} Lv.${poke.level} (HP: ${poke.hp}) `;
+
+      const swap = document.createElement('button');
