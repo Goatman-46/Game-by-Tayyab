@@ -248,3 +248,53 @@ background: cyan;
   }
 
   function healTeam() {
+if (gameState.coins >= 10) {
+      gameState.hp = gameState.maxHp;
+      gameState.caught.forEach(p => p.hp = p.hp || 10);
+      gameState.coins -= 10;
+      alert('Your team is fully healed!');
+    } else {
+      alert('Not enough coins!');
+    }
+    closeCenter();
+  }
+
+  function startBattle() {
+    const random = wildPokemons[Math.floor(Math.random() * wildPokemons.length)];
+    wildPokemon = {
+      name: random.name,
+      hp: random.maxHp,
+      maxHp: random.maxHp,
+      sprite: random.sprite
+    };
+    document.getElementById('enemySprite').src = wildPokemon.sprite;
+    document.getElementById('battleScreen').style.display = 'block';
+    document.getElementById('enemyName').textContent = 'Wild ' + wildPokemon.name;
+    document.getElementById('playerName').textContent = gameState.starter;
+    updateBars();
+  }
+
+  function useMove() {
+    wildPokemon.hp -= 5;
+    if (wildPokemon.hp <= 0) {
+      wildPokemon.hp = 0;
+      gameState.exp += 5;
+      gameState.coins += 5;
+      alert('You defeated the wild Pokémon!');
+      document.getElementById('battleScreen').style.display = 'none';
+      checkLevelUp();
+      return;
+    }
+
+    gameState.hp -= 3;
+    if (gameState.hp <= 0) {
+      alert('You fainted!');
+      gameState.hp = 1;
+      document.getElementById('battleScreen').style.display = 'none';
+    }
+    updateBars();
+  }
+
+  function catchPokemon() {
+    if (Math.random() < wildPokemon.hp / wildPokemon.maxHp) {
+      alert(`Oh no! ${wildPokemon.name} broke free!`);
