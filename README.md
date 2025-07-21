@@ -148,3 +148,53 @@ background: cyan;
     [0,0,0,3,1,1,1,1,1,1,1],
     [0,2,0,0,1,1,1,1,1,1,1],
     [0,0,0,0,0,3,1,1,1,1,1],
+[0,0,0,3,0,0,1,1,1,1,1],
+    [0,0,0,0,0,0,0,0,0,3,0],
+    [1,1,0,0,0,0,0,0,3,0,0],
+    [1,1,3,0,0,0,0,0,0,0,0],
+    [1,1,1,0,0,0,3,0,0,0,0],
+  ];
+
+  const tileColors = {
+    0: 'green',
+    1: 'blue',
+    2: 'pink',
+    3: 'green'
+  };
+
+  let player = { x: 0, y: 0, color: 'red' };
+
+  let gameState = JSON.parse(localStorage.getItem("pokemonSave")) || {
+    starter: null,
+    coins: 50,
+    level: 1,
+    exp: 0,
+    expToLevel: 10,
+    hp: 20,
+    maxHp: 20,
+    caught: [],
+    storage: []
+  };
+
+  const wildPokemons = [
+    { name: 'Pidgey', maxHp: 10, sprite: 'https://img.pokemondb.net/sprites/red-blue/normal/pidgey.png' },
+    { name: 'Rattata', maxHp: 12, sprite: 'https://img.pokemondb.net/sprites/red-blue/normal/rattata.png' },
+    { name: 'Caterpie', maxHp: 8, sprite: 'https://img.pokemondb.net/sprites/red-blue/normal/caterpie.png' },
+    { name: 'Zubat', maxHp: 10, sprite: 'https://img.pokemondb.net/sprites/red-blue/normal/zubat.png' },
+    { name: 'Charizard', maxHp: 25, sprite: 'https://img.pokemondb.net/sprites/red-blue/normal/charizard.png' },
+    { name: 'Pikachu', maxHp: 12, sprite: 'https://img.pokemondb.net/sprites/red-blue/normal/pikachu.png' },
+    { name: 'Squirtle', maxHp: 12, sprite: 'https://img.pokemondb.net/sprites/red-blue/normal/squirtle.png' },
+    { name: 'Bulbasaur', maxHp: 12, sprite: 'https://img.pokemondb.net/sprites/red-blue/normal/bulbasaur.png' },
+    { name: 'Charmander', maxHp: 12, sprite: 'https://img.pokemondb.net/sprites/red-blue/normal/charmander.png' },
+    { name: 'Blastoise', maxHp: 25, sprite: 'https://img.pokemondb.net/sprites/red-blue/normal/Blastoise.png' }
+  ];
+
+  let wildPokemon = {};
+
+  function drawMap() {
+    for (let row = 0; row < mapRows; row++) {
+      for (let col = 0; col < mapCols; col++) {
+        const tile = map[row][col];
+        ctx.fillStyle = tileColors[tile];
+        ctx.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
+     }
