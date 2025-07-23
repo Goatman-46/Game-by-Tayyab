@@ -94,7 +94,7 @@ background: cyan;
 
   <div id="pokemonCenter">
     <h2>Pokémon Center</h2>
-    <p>Heal your team?</p>
+    <p>How can i help you?</p>
     <button onclick="showReleaseMenu()">Release Pokémon</button>
     <div id="releaseMenu" style="margin-top:10px; display:none;">
       <h3>Choose a Pokémon to release:</h3>
